@@ -1,13 +1,12 @@
-  repos:
-    - repo: https://github.com/ambv/black
-      rev: stable
-      hooks:
-        - id: black
-    - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v2.0.0
-      hooks:
-        - id: flake8
-        - id: trailing-whitespace
-        - id: end-of-file-fixer
-        - id: check-yaml
-        - id: check-added-large-files
+repos:
+  - repo: https://github.com/psf/black
+    rev: 23.3.0  # You can specify the latest version here
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0  # Specify the latest version
+    hooks:
+      - id: flake8
+        args: [--max-line-length=88]  # Example argument, adjust as needed
+
