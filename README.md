@@ -1,5 +1,6 @@
-# udemy_lite
-a website that allow useres to create and share educational Courses ,these courses are a collection of free structured organaised contents books ,pdfs ,vids ,images ,summary ...
+# Udemy_Lite
+
+  a website that allow useres to create and share educational Courses ,these courses are a collection of free structured organaised contents books ,pdfs ,vids ,images ,summary ...
 
 # User-Stories
 
@@ -10,15 +11,17 @@ a website that allow useres to create and share educational Courses ,these cours
   - public courses are rated by the viewers
 
 # Database-Schema
+  
   ![database schema](https://github.com/khttp/udemy_lite/blob/main/resourses/udemy-lite-schema.png)
 
 # Technolgies
-
+  
   - Backend
-    - Python
+    - Python3
     - Fastapi
   - Frontend
     - Vue
+    - Typescript
     - Quasar
   - Database
     -SQLite3
