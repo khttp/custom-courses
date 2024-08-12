@@ -1,25 +1,33 @@
-from pydantic import BaseModel, validator
+import uuid
+from datetime import date
+from pydantic import BaseModel, validator, confloat
 from enum import Enum
 from sqlmodel import SQLModel, Field, Relationship
 
 
 class CourseType(Enum):
-    Free = "free"
-    Paid = "paid"
+    Free = "public"
+    Paid = "private"
+
+
+class Category(SQLModel):
+    id: uuid.UUID
+    name: str
+    course_id: uuid.UUID
 
 
 class Contents(BaseModel):
-    id: int
+    id: uuid.UUID
     name: str
     content_type: str
     duration: float
 
 
-class CourseBase(BaseModel):
+class CourseBase(SQLModel):
     name: str
-    description: str
     course_type: CourseType
-    price: int
+    time_stamps: date
+    rate: confloat(ge=0.0, le=10)
     content: list[Contents] = []
 
 
@@ -30,4 +38,4 @@ class CourseCreate(CourseBase):
 
 
 class CourseWithID(CourseBase):
-    id: int
+    id: uuid.UUID
