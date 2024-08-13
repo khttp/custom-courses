@@ -1,8 +1,9 @@
+from typing import Optional
 import uuid
 from datetime import date
-from pydantic import BaseModel, validator, confloat
+from pydantic import field_validator, confloat
 from enum import Enum
-from sqlmodel import SQLModel, Field, Relationship
+from sqlmodel import Field, Relationship, SQLModel, create_engine
 
 
 class CourseType(Enum):
@@ -10,32 +11,41 @@ class CourseType(Enum):
     Paid = "private"
 
 
-class Category(SQLModel):
-    id: uuid.UUID
+class Category(SQLModel, table=True):
+    id: uuid.UUID = Field(primary_key=True)
     name: str
-    course_id: uuid.UUID
+    course_id: uuid.UUID = Field(foreign_key="course.id")
 
 
-class Contents(BaseModel):
-    id: uuid.UUID
+class Content(SQLModel, table=True):
+    id: uuid.UUID = Field(primary_key=True)
     name: str
     content_type: str
-    duration: float
+    course_id: uuid.UUID = Field(foreign_key="course.id")
+    course: "Course" = Relationship(back_populates="content")
 
 
-class CourseBase(SQLModel):
+class Course(SQLModel, table=True):
+    id: uuid.UUID = Field(primary_key=True)
     name: str
     course_type: CourseType
     time_stamps: date
     rate: confloat(ge=0.0, le=10)
-    content: list[Contents] = []
+    content: list[Content] = Relationship(back_populates="course")
+    user_id: uuid.UUID = Field(foreign_key="user.id")
+    user: Optional["User"] = Relationship(back_populates="courses")  # type: ignore
+    enrolments: Optional["Enrolment"] = Relationship(back_populates="course")  # type: ignore
 
-
-class CourseCreate(CourseBase):
-    @validator("course_type", pre=True)
+    @field_validator("course_type")
     def title_case_type(cls, value):
         return value.title()
 
 
-class CourseWithID(CourseBase):
-    id: uuid.UUID
+# Create an SQLite database engine
+sqlite_file_name = "rf.sqlite3"
+sqlite_url = f"sqlite:///{sqlite_file_name}"
+engine = create_engine(sqlite_url, echo=True)
+
+
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
