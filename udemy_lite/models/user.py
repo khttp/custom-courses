@@ -11,7 +11,7 @@ class User(SQLModel, table=True):
     email: str
     password: str
     courses: list[Course] = Relationship(back_populates="user")
-    enrolments: Optional["Enrolment"] = Relationship(back_populates="user")
+    enrolments: list["Enrolment"] = Relationship(back_populates="user")
 
 
 class Enrolment(SQLModel, table=True):

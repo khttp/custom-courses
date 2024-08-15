@@ -1,5 +1,4 @@
 from fastapi import APIRouter
-from ..models.course import CourseType, CourseBase, CourseCreate, CourseWithID
 
 course_router = APIRouter()
 
@@ -10,12 +9,12 @@ async def get_courses() -> list[dict]:
 
 
 @course_router.get("/courses/{course_id}")
-async def get_course_by_id(course_id: int) -> CourseWithID:
+async def get_course_by_id(course_id: int):
     pass
 
 
 @course_router.post("/courses")
-async def create_course(course_data: CourseCreate) -> CourseWithID:
+async def create_course(course_data):
     pass
 
 

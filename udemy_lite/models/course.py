@@ -14,12 +14,13 @@ class CourseType(Enum):
 class Category(SQLModel, table=True):
     id: uuid.UUID = Field(primary_key=True)
     name: str
-    course_id: uuid.UUID = Field(foreign_key="course.id")
+    courses: list["Course"] = Relationship(back_populates="courses")
 
 
 class Content(SQLModel, table=True):
     id: uuid.UUID = Field(primary_key=True)
     name: str
+    description: Optional["str"]
     content_type: str
     course_id: uuid.UUID = Field(foreign_key="course.id")
     course: "Course" = Relationship(back_populates="content")
@@ -28,13 +29,16 @@ class Content(SQLModel, table=True):
 class Course(SQLModel, table=True):
     id: uuid.UUID = Field(primary_key=True)
     name: str
+    description: Optional["str"]
     course_type: CourseType
     time_stamps: date
-    rate: confloat(ge=0.0, le=10)
-    content: list[Content] = Relationship(back_populates="course")
+    rate: confloat(ge=0.0, le=10)  # type: ignore
     user_id: uuid.UUID = Field(foreign_key="user.id")
+    category_id: uuid.UUID = Field(foreign_key="category.id")
+    content: list[Content] = Relationship(back_populates="course")
     user: Optional["User"] = Relationship(back_populates="courses")  # type: ignore
-    enrolments: Optional["Enrolment"] = Relationship(back_populates="course")  # type: ignore
+    category: Optional["Category"] = Relationship(back_populates="courses")  # type: ignore
+    enrolments: list["Enrolment"] = Relationship(back_populates="course")  # type: ignore
 
     @field_validator("course_type")
     def title_case_type(cls, value):
