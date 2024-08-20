@@ -24,4 +24,4 @@
     - Typescript
     - Quasar
   - Database
-    -SQLite3
+    - SQLite3
