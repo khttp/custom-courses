@@ -1,4 +1,4 @@
-# Udemy_Lite
+# Custom_courses
 
   a website that allow useres to create and share educational Courses ,these courses are a collection of free structured organaised contents books ,pdfs ,vids ,images ,summary ...
 
@@ -12,7 +12,7 @@
 
 # Database-Schema
   
-  ![database schema](https://github.com/khttp/udemy_lite/blob/main/resourses/udemy-lite-schema.png)
+  ![database schema](https://github.com/khttp/custcustom-courses/blob/main/resourses/custom-courses-schema.png)
 
 # Technolgies
   
