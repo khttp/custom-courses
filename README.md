@@ -12,7 +12,7 @@
 
 # Database-Schema
   
-  ![database schema](https://github.com/khttp/custcustom-courses/blob/main/resourses/custom-courses-schema.png)
+  ![database schema](https://github.com/khttp/custom-courses/blob/main/resourses/custom-courses-schema.png)
 
 # Technolgies
   
