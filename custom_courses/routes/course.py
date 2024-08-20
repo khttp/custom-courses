@@ -4,6 +4,7 @@ from ..models.course import Course, Category, Content
 from sqlmodel import Session, select
 from ..database import get_session
 import uuid
+from ..utils import convert_date, convert_uuid, convert_course_type
 
 course_router = APIRouter()
 
@@ -59,13 +60,20 @@ async def create_course(
 
 @course_router.put("/courses/{course_id}")
 async def update_course(
-    course_id: uuid.UUID, NewCourse: Course, session: Session = Depends(get_session)
+    course_id: uuid.UUID, NewCourse: dict, session: Session = Depends(get_session)
 ) -> Course:
     db_course = session.get(Course, course_id)
     if not db_course:
         raise HTTPException(status_code=404, detail="page not found")
-    course = NewCourse.model_dump(exclude_unset=True)
-    for key, value in course.items():
+    if "time_stamps" in NewCourse:
+        NewCourse["time_stamps"] = convert_date(NewCourse["time_stamps"])
+    if "user_id" in NewCourse:
+        NewCourse["user_id"] = convert_uuid(NewCourse["user_id"])
+    if "category_id" in NewCourse:
+        NewCourse["category_id"] = convert_uuid(NewCourse["category_id"])
+    if "course_type" in NewCourse:
+        NewCourse["course_type"] = convert_course_type(NewCourse["course_type"])
+    for key, value in NewCourse.items():
         setattr(db_course, key, value)
     session.add(db_course)
     session.commit()

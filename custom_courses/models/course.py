@@ -6,9 +6,9 @@ from enum import Enum
 from sqlmodel import Field, Relationship, SQLModel, create_engine
 
 
-class CourseType(Enum):
-    Free = "public"
-    Paid = "private"
+class CourseType(str, Enum):
+    Public = "public"
+    Private = "private"
 
 
 class Category(SQLModel, table=True):

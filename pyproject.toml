@@ -1,7 +1,7 @@
 [tool.poetry]
-name = "udemy-lite"
+name = "custom-courses"
 version = "0.1.0"
-description = "a simple version of the famous public platform udemy designed for courses"
+description = "a website that allow users to create and share educational Courses ,these courses are a collection of free structured organized contents books ,pdfs ,vids ,images ,summary ... "
 authors = ["abdelrahman khattab <abdelrahmankhattab9999@gmail.com>"]
 license = "MIT License"
 readme = "README.md"
@@ -18,4 +18,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-udemy-lite = "udemy_lite.main:main_app"
+custom_courses = "custom_courses.main:main_app"

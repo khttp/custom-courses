@@ -2,7 +2,7 @@ from typing import Optional
 import uuid
 from sqlmodel import Relationship, SQLModel, Field
 
-from udemy_lite.models.course import Course
+from custom_courses.models.course import Course
 
 
 class User(SQLModel, table=True):
