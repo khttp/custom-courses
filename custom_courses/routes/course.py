@@ -1,6 +1,6 @@
 from datetime import date, datetime
 from fastapi import APIRouter, Depends, HTTPException
-from ..models import Course, Content, User
+from ..models import Course, Content, User, CourseType
 from sqlmodel import Session, select
 from ..database import get_session
 import uuid
@@ -34,11 +34,21 @@ course_router = APIRouter()
 #     return category
 #
 #
+@course_router.get("/courses/public")
+async def get_public_courses(session: Session = Depends(get_session)) -> list[Course]:
+    statement = select(Course).where(Course.course_type == "public")
+    results = session.exec(statement)
+    public_courses = results.all()
+    if len(public_courses) == 0:
+        return "No Public Courses Yet"
+    return public_courses
+
+
 @course_router.get("/users/me/courses")
 async def get_user_courses(
-    current_user_id: str, session: Session = Depends(get_session)
+    current_user_id: uuid.UUID, session: Session = Depends(get_session)
 ) -> list[Course]:
-    user = session.get(User, uuid.UUID(current_user_id))
+    user = session.get(User, current_user_id)
     if not user:
         raise HTTPException(status_code=404, detail="user not found")
     return user.courses
@@ -46,14 +56,14 @@ async def get_user_courses(
 
 @course_router.post("/users/me/courses")
 async def add_user_course(
-    user_id: str, new_course: Course, session: Session = Depends(get_session)
+    user_id: uuid.UUID, new_course: Course, session: Session = Depends(get_session)
 ) -> Course:
-    user = session.get(User, uuid.UUID(user_id))
+    user = session.get(User, user_id)
     if not user:
         raise HTTPException(status_code=404, detail="user not found")
     if new_course.rate <= 0 or new_course.rate >= 10:
         raise ValueError("rate must be between 0 and 10")
-    new_course.user_id = uuid.UUID(user_id)
+    new_course.user_id = user_id
     new_course.id = uuid.UUID(new_course.id)
     new_course.time_stamps = convert_date(new_course.time_stamps)
     new_course.course_type = convert_course_type(new_course.course_type)
