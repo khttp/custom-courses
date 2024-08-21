@@ -12,6 +12,8 @@ pytest-fastapi = "^0.1.0"
 fastapi = "^0.111.1"
 sqlmodel = "^0.0.21"
 pydantic = "^2.8.2"
+python-jose = "^3.3.0"
+passlib = "^1.7.4"
 
 [build-system]
 requires = ["poetry-core"]

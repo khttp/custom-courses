@@ -1,5 +1,5 @@
 from sqlmodel import SQLModel, Session, create_engine
-from custom_courses.models.user import User, Enrolment
+from custom_courses.models.user import User
 from custom_courses.models.course import Category, Content, Course
 
 sqlite_file_name = "rf.sqlite3"
