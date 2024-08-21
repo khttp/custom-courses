@@ -15,17 +15,7 @@ import uuid
 user_router = APIRouter()
 
 
-@user_router.post("/register")
-async def create_user(user: User, session: Session = Depends(get_session)) -> User:
-    user.password = get_password_hash(user.password)
-    user.id = uuid.UUID(user.id)
-    session.add(user)
-    session.commit()
-    session.refresh(user)
-    return user
-
-
-@user_router.post("/login")
+@user_router.post("/token")
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     session: Session = Depends(get_session),
@@ -42,3 +32,13 @@ async def login(
         data={"sub": str(user.id)}, expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+
+@user_router.post("/register")
+async def create_user(user: User, session: Session = Depends(get_session)) -> User:
+    user.password = get_password_hash(user.password)
+    user.id = uuid.UUID(user.id)
+    session.add(user)
+    session.commit()
+    session.refresh(user)
+    return user
