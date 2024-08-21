@@ -1,9 +1,9 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+import uvicorn
 from custom_courses.routes.course import course_router
 from custom_courses.routes.user import user_router
 from .database import create_db_and_tables
-import uvicorn
 
 
 @asynccontextmanager

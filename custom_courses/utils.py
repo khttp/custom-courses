@@ -1,6 +1,6 @@
 from datetime import datetime, date
 from uuid import UUID
-from .models.course import CourseType
+from .models import CourseType
 
 
 def convert_date(date_str: str) -> date:

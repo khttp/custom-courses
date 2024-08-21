@@ -1,6 +1,5 @@
 from sqlmodel import SQLModel, Session, create_engine
-from custom_courses.models.user import User
-from custom_courses.models.course import Category, Content, Course
+from .models import Content, Course, User
 
 sqlite_file_name = "rf.sqlite3"
 sqlite_url = f"sqlite:///{sqlite_file_name}"

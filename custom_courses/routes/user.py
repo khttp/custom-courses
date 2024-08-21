@@ -1,7 +1,7 @@
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
-from ..models.user import User
+from ..models import User
 from ..database import get_session
 from ..auth import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
