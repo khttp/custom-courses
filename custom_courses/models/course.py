@@ -40,4 +40,3 @@ class Course(SQLModel, table=True):
     content: list[Content] = Relationship(back_populates="course")
     user: "User" = Relationship(back_populates="courses")  # type: ignore
     category: "Category" = Relationship(back_populates="courses")  # type: ignore
-    enrollments: list["Enrolment"] = Relationship(back_populates="course")  # type: ignore

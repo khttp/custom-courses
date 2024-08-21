@@ -32,9 +32,11 @@ async def get_category_by_ID(
     return category
 
 
-@course_router.get("/courses")
-async def get_courses(session: Session = Depends(get_session)) -> list[Course]:
-    courses = session.exec(select(Course)).all()
+@course_router.get("user/me/courses")
+async def get_courses(
+    current_user_id: str, session: Session = Depends(get_session)
+) -> list[Course]:
+    courses = session.get(Course, uuid.UUID())
     return courses
 
 
@@ -46,7 +48,7 @@ async def get_course_by_id(
     return course
 
 
-@course_router.post("/courses")
+@course_router.post("/courses/me")
 async def create_course(
     course: Course, session: Session = Depends(get_session)
 ) -> Course:
