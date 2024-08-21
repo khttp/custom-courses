@@ -15,8 +15,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-app.include_router(user_router)
-app.include_router(course_router, dependencies=[Depends(get_current_user)])
+app.include_router(user_router, prefix="/auth", tags=["auth"])
+app.include_router(
+    course_router, tags=["courses"], dependencies=[Depends(get_current_user)]
+)
 
 
 def main_app():
