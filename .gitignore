@@ -161,3 +161,11 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 rf.sqlite3
+custom-courses-ui/.npmrc
+custom-courses-ui/.vscode/
+custom-courses-ui/.quasar/
+custom-courses-ui/yarn.lock
+custom-courses-ui/.editorconfig
+custom-courses-ui/package-lock.json
+
+
