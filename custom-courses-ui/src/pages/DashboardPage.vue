@@ -2,25 +2,65 @@
 div.text-h3.text-center.text-teal your courses
 div.q-pa-md 
   .flex
+   div(v-for="course in courses")
     q-card.my-card
       img(src="https://cdn.quasar.dev/img/mountains.jpg")
       q-card-section
-        .text-h6 Our Changing Planet
-        .text-subtitle2 by John Doe
+        .text-h5 {{ course["name"] }}
+        .text-subtitle2 {{ course["description"] }}
+        q-btn(label="enroll",@click="ensure_access_token")
 </template>
 <script>
+import axios from 'axios';
 export default {
   name: 'HomePage',
-    methods: {
-    async fetchCourses() {
+  data() {
+    return {
+      courses: [],
+    };
+  },
+  mounted() {
+    this.fetchCourses();
+  },
+  methods: {
+    async ensure_access_token() {
+      const formData = new URLSearchParams();
+      formData.append('username', 'string'); // Replace with actual username
+      formData.append('password', 'string'); // Replace with actual password
       try {
-        const response = await axios.get('http://localhost:8000/me/courses');
-        this.courses = response.data;
+        const response = await axios.post(
+          'http://localhost:8000/auth/login',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+          }
+        );
+
+        // Assuming the access token is in the response data
+        const accessToken = response.data.access_token; // Modify this based on your backend response structure
+
+        // Store the access token for future use (optional, e.g., in localStorage)
+        localStorage.setItem('access_token', accessToken);
+
+        console.log('Access token:', accessToken);
+        return accessToken;
       } catch (error) {
-        console.error('Error fetching courses:', error);
+        console.error('Error getting access token:', error);
+        throw error;
       }
     },
-  }
+    async fetchCourses() {
+      const token = localStorage.getItem('access_token');
+      const response = await axios.get('http://localhost:8000/courses/public', {
+        headers: {
+          Authorization: `Bearer ${token}`, // Include the token as a Bearer token
+        },
+      });
+      this.courses = response.data;
+    },
+  },
 };
 </script>
 <style lang="sass" scoped>
