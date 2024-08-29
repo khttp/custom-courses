@@ -1,9 +1,31 @@
 <template lang="pug">
-div 
-  .text-h1.text-teal.text-center Dashboard page
+div.text-h3.text-center.text-teal your courses
+div.q-pa-md 
+  .flex
+    q-card.my-card
+      img(src="https://cdn.quasar.dev/img/mountains.jpg")
+      q-card-section
+        .text-h6 Our Changing Planet
+        .text-subtitle2 by John Doe
 </template>
 <script>
 export default {
   name: 'HomePage',
+    methods: {
+    async fetchCourses() {
+      try {
+        const response = await axios.get('http://localhost:8000/me/courses');
+        this.courses = response.data;
+      } catch (error) {
+        console.error('Error fetching courses:', error);
+      }
+    },
+  }
 };
 </script>
+<style lang="sass" scoped>
+.my-card
+  margin:10px
+  width: 100%
+  max-width:22rem
+</style>

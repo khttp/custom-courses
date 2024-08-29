@@ -1,5 +1,5 @@
 <template lang="pug">
-q-layout(view="lHh lpr lFf" container style="height: 100vh" )
+q-layout(container style="height: 100vh" )
   q-header.bg-teal
     q-toolbar
       q-icon(name="school" size="2rem")

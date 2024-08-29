@@ -1,6 +1,6 @@
 <template lang="pug">
 div 
-  .text-h1.text-teal.text-center setting bage
+  .text-h1.text-teal.text-center setting Page
   
 </template>
 <script setup lang="ts">
