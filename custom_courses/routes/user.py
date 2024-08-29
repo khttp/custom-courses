@@ -15,7 +15,7 @@ import uuid
 user_router = APIRouter()
 
 
-@user_router.post("/token")
+@user_router.post("/login")
 async def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     session: Session = Depends(get_session),

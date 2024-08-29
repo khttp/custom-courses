@@ -29,6 +29,7 @@ class Content(SQLModel, table=True):
 class Course(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     name: str
+    img_url: str
     description: Optional["str"]
     course_type: CourseType
     time_stamps: date
