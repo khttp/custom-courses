@@ -37,10 +37,7 @@ course_router = APIRouter()
 @course_router.get("/courses/public")
 async def get_public_courses(session: Session = Depends(get_session)) -> list[Course]:
     statement = select(Course).where(Course.course_type == "public")
-    results = session.exec(statement)
-    public_courses = results.all()
-    if len(public_courses) == 0:
-        return "No Public Courses Yet"
+    public_courses = session.exec(statement).all()
     return public_courses
 
 
@@ -61,8 +58,8 @@ async def add_user_course(
     user = session.get(User, user_id)
     if not user:
         raise HTTPException(status_code=404, detail="user not found")
-    if new_course.rate <= 0 or new_course.rate >= 10:
-        raise ValueError("rate must be between 0 and 10")
+    if new_course.rate < 0 or new_course.rate > 10:
+        raise ValueError("rate must be from 0 and 10")
     new_course.user_id = user_id
     new_course.id = uuid.UUID(new_course.id)
     new_course.time_stamps = convert_date(new_course.time_stamps)

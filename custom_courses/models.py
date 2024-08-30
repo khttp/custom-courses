@@ -33,7 +33,7 @@ class Course(SQLModel, table=True):
     description: Optional["str"]
     course_type: CourseType
     time_stamps: date
-    rate: float
+    rate: float = 0.0
     user_id: uuid.UUID = Field(default_factory=uuid.uuid4, foreign_key="user.id")
     # category_id: uuid.UUID = Field(
     #     default_factory=uuid.uuid4, foreign_key="category.id"
