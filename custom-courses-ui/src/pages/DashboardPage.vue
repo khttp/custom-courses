@@ -8,7 +8,7 @@ div.q-pa-md
       q-card-section
         .text-h5 {{ course["name"] }}
         .text-subtitle2 {{ course["description"] }}
-        q-btn(label="enroll",@click="ensure_access_token")
+        q-btn(label="navigate",text-color="teal",@click="ensure_access_token")
 </template>
 <script>
 import axios from 'axios';
@@ -20,6 +20,7 @@ export default {
     };
   },
   mounted() {
+    this.ensure_access_token();
     this.fetchCourses();
   },
   methods: {
@@ -38,10 +39,7 @@ export default {
           }
         );
 
-        // Assuming the access token is in the response data
         const accessToken = response.data.access_token; // Modify this based on your backend response structure
-
-        // Store the access token for future use (optional, e.g., in localStorage)
         localStorage.setItem('access_token', accessToken);
 
         console.log('Access token:', accessToken);
@@ -53,11 +51,17 @@ export default {
     },
     async fetchCourses() {
       const token = localStorage.getItem('access_token');
-      const response = await axios.get('http://localhost:8000/courses/public', {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include the token as a Bearer token
-        },
-      });
+      const response = await axios.get(
+        'http://localhost:8000/users/me/courses',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token as a Bearer token
+          },
+          params: {
+            current_user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+          },
+        }
+      );
       this.courses = response.data;
     },
   },
