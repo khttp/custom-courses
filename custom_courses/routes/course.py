@@ -62,7 +62,6 @@ async def add_user_course(
         raise ValueError("rate must be from 0 and 10")
     new_course.user_id = user_id
     new_course.id = uuid.UUID(new_course.id)
-    new_course.time_stamps = convert_date(new_course.time_stamps)
     new_course.course_type = convert_course_type(new_course.course_type)
     session.add(new_course)
     session.commit()

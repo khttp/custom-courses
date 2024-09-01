@@ -1,6 +1,6 @@
 from typing import Optional
 import uuid
-from datetime import date
+from datetime import date, datetime
 from enum import Enum
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -32,7 +32,7 @@ class Course(SQLModel, table=True):
     img_url: str
     description: Optional["str"]
     course_type: CourseType
-    time_stamps: date
+    time_stamps: date = datetime.now()
     rate: float = 0.0
     user_id: uuid.UUID = Field(default_factory=uuid.uuid4, foreign_key="user.id")
     # category_id: uuid.UUID = Field(
