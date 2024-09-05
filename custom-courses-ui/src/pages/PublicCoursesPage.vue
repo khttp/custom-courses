@@ -65,10 +65,11 @@ export default {
 </script>
 <style lang="sass" scoped>
 .my-card
-  margin:20px
-  width: 100%
+  margin:10px
+  padding:10px
+  width: 100vh
   max-width:22rem
 .q-img 
   height: 200px
-  width: 200px
+  object-fit: cover
 </style>
