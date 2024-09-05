@@ -9,8 +9,24 @@ div.q-pa-md
         )
       q-card-section
         .text-h5 {{ course["name"] }}
-        .text-subtitle2 {{ course["description"] }}
-        q-btn(label="navigate",text-color="teal",@click="ensure_access_token")
+          q-icon(name="edit",size="1rem")
+            q-tooltip Click to edit section name
+          q-popup-edit(
+            v-model="course.name",
+            v-slot='scope',
+            touch-position
+            auto-save,
+            )
+            q-input(
+              v-model='scope.value',
+              hint='Edit section name',
+              dense,
+              autofocus,
+              counter,
+              @keyup.enter='edit_course_name(course.id,scope.value);scope.cancel()',
+              :rules='[(val) => !!val || "Field is required"]'
+          )
+        q-btn(label="navigate",text-color="teal", disable)
         q-btn(label="delete",text-color="teal",@click="delete_course(course.id)")
 </template>
 <script>
@@ -87,8 +103,24 @@ export default {
       });
     }catch(error){
       console.log(error)
+    }    
+  },
+    async edit_course_name(courseID,newName) {
+      const token = localStorage.getItem('access_token');
+      await axios.put(
+        `http://localhost:8000/courses/${courseID}`,{name:newName},
+        {headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      Notify.create({
+        message: 'course updated successfully!\n refresh to see your changes',
+        color: 'green',
+        position: 'bottom',
+        timeout: 3000,
+      });
     }
-  }
   },
 };
 </script>
