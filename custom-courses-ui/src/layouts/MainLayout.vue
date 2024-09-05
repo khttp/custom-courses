@@ -13,8 +13,9 @@ q-layout(container style="height: 100vh" )
       )
       q-avatar(size='50px')
         img(
-          src="icons/favicon-128x128.png"
+          src="icons/boy.png"
         )
+      
   q-page-container
     div
       q-splitter(v-model="splitterModel" style="height: 100vh")
