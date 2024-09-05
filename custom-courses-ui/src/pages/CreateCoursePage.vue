@@ -31,6 +31,7 @@ div.q-pa-md(style="max-width: 400px")
 
 <script>
 import { ref } from 'vue';
+import { Notify } from 'quasar';
 import axios from 'axios';
 import {v4} from 'uuid';
 export default {
@@ -43,12 +44,14 @@ export default {
     description : '',
     imgUrl : '',
     visibility : 'private'
-    })
-
-    return {
-      newCourse,
-
-      async onSubmit() {
+    });
+    const onReset=()=>{ 
+        newCourse.value.name = '';
+        newCourse.value.description = '';
+        newCourse.value.imgUrl = '';
+        newCourse.value.visibility='private'
+      };
+    const onSubmit=async()=> {
         const course={
           id:v4(),
           name: newCourse.value.name,
@@ -57,7 +60,6 @@ export default {
           course_type: newCourse.value.visibility,
           user_id:'3fa85f64-5717-4562-b3fc-2c963f66afa6'
         }
-        try {
         const token = localStorage.getItem('access_token');
         console.log(token)
         const response = await axios.post('http://localhost:8000/users/me/courses', course,
@@ -70,17 +72,19 @@ export default {
           },
         }
       )
-        console.log('Data saved successfully:', response.data)
-      } catch (error) {
-        console.error('Error saving data:', error)
-      }
-      },
-
-      onReset() {
-        name.value = null;
-        description.value = null;
-        imgUrl.value = null;
-      },
+      // console.log(response)
+        Notify.create({
+        message: `course ${response.data.name} created successfully! `,
+        color: 'green',
+        position: 'bottom',
+        timeout: 3000,
+          });
+      onReset()
+    };
+    return {
+      newCourse,
+      onReset,
+      onSubmit
     };
   },
 };

@@ -4,7 +4,9 @@ div.q-pa-md
   .flex
    div(v-for="course in courses")
     q-card.my-card
-      img(src="https://cdn.quasar.dev/img/mountains.jpg")
+      q-img(
+        :src= "course.img_url"
+        )
       q-card-section
         .text-h5 {{ course["name"] }}
         .text-subtitle2 {{ course["description"] }}
@@ -63,7 +65,10 @@ export default {
 </script>
 <style lang="sass" scoped>
 .my-card
-  margin:10px
+  margin:20px
   width: 100%
   max-width:22rem
+.q-img 
+  height: 200px
+  width: 200px
 </style>

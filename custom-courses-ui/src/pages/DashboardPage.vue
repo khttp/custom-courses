@@ -2,16 +2,20 @@
 div.text-h3.text-center.text-teal your courses
 div.q-pa-md 
   .flex
-   div(v-for="course in courses")
+   div(v-for="course in courses" :key="course.id")
     q-card.my-card
-      img(src="https://cdn.quasar.dev/img/mountains.jpg")
+      q-img(
+        :src= "course.img_url"
+        )
       q-card-section
         .text-h5 {{ course["name"] }}
         .text-subtitle2 {{ course["description"] }}
         q-btn(label="navigate",text-color="teal",@click="ensure_access_token")
+        q-btn(label="delete",text-color="teal",@click="delete_course(course.id)")
 </template>
 <script>
 import axios from 'axios';
+import { Notify } from 'quasar';
 export default {
   name: 'HomePage',
   data() {
@@ -26,8 +30,8 @@ export default {
   methods: {
     async ensure_access_token() {
       const formData = new URLSearchParams();
-      formData.append('username', 'string'); // Replace with actual username
-      formData.append('password', 'string'); // Replace with actual password
+      formData.append('username', 'string'); 
+      formData.append('password', 'string'); 
       try {
         const response = await axios.post(
           'http://localhost:8000/auth/login',
@@ -64,12 +68,37 @@ export default {
       );
       this.courses = response.data;
     },
+    async delete_course(courseID){
+      
+      const token = localStorage.getItem('access_token');
+      try{
+        await axios.delete(`http://localhost:8000/courses/${courseID}`,
+        {headers:{
+          Authorization: `Bearer ${token}`,
+        }}
+      )
+      this.courses = this.courses.filter(course => course.id !== courseID);
+      
+      Notify.create({
+        message: 'course deleted successfully!',
+        color: 'green',
+        position: 'bottom',
+        timeout: 3000,
+      });
+    }catch(error){
+      console.log(error)
+    }
+  }
   },
 };
 </script>
 <style lang="sass" scoped>
 .my-card
   margin:10px
+  padding:5px
   width: 100%
   max-width:22rem
+.q-img 
+  height: 200px
+  object-fit: cover
 </style>
