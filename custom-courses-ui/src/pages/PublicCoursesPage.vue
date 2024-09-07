@@ -22,35 +22,9 @@ export default {
     };
   },
   mounted() {
-    this.ensure_access_token();
     this.fetchCourses();
   },
   methods: {
-    async ensure_access_token() {
-      const formData = new URLSearchParams();
-      formData.append('username', 'string'); // Replace with actual username
-      formData.append('password', 'string'); // Replace with actual password
-      try {
-        const response = await axios.post(
-          'http://localhost:8000/auth/login',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-          }
-        );
-
-        const accessToken = response.data.access_token; // Modify this based on your backend response structure
-        localStorage.setItem('access_token', accessToken);
-
-        console.log('Access token:', accessToken);
-        return accessToken;
-      } catch (error) {
-        console.error('Error getting access token:', error);
-        throw error;
-      }
-    },
     async fetchCourses() {
       const token = localStorage.getItem('access_token');
       const response = await axios.get('http://localhost:8000/courses/public', {
