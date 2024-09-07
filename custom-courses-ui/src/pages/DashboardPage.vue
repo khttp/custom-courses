@@ -45,7 +45,6 @@ export default {
   methods: {
     async fetchCourses() {
       const token = localStorage.getItem('access_token');
-      console.log(token)
       const response = await axios.get(
         'http://localhost:8000/users/me/courses',
         {
