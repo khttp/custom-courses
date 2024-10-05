@@ -47,5 +47,7 @@ class User(SQLModel, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     name: str
     email: str
+    phone: str
+    country: str
     password: str
     courses: list[Course] = Relationship(back_populates="user")

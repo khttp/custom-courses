@@ -33,58 +33,59 @@ div.q-pa-md(style="max-width: 400px")
 import { ref } from 'vue';
 import { Notify } from 'quasar';
 import axios from 'axios';
-import {v4} from 'uuid';
+import { v4 } from 'uuid';
+const user_id = localStorage.getItem('user_id');
+const token = localStorage.getItem('access_token');
 export default {
-  mounted(){
-
-  },
+  mounted() {},
   setup() {
-    const newCourse =ref({
-    name : '',
-    description : '',
-    imgUrl : '',
-    visibility : 'private'
+    const newCourse = ref({
+      name: '',
+      description: '',
+      imgUrl: '',
+      visibility: 'private',
     });
-    const onReset=()=>{ 
-        newCourse.value.name = '';
-        newCourse.value.description = '';
-        newCourse.value.imgUrl = '';
-        newCourse.value.visibility='private'
+    const onReset = () => {
+      newCourse.value.name = '';
+      newCourse.value.description = '';
+      newCourse.value.imgUrl = '';
+      newCourse.value.visibility = 'private';
+    };
+    const onSubmit = async () => {
+      const course = {
+        id: v4(),
+        name: newCourse.value.name,
+        description: newCourse.value.description,
+        img_url: newCourse.value.imgUrl,
+        course_type: newCourse.value.visibility,
+        user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       };
-    const onSubmit=async()=> {
-        const course={
-          id:v4(),
-          name: newCourse.value.name,
-          description: newCourse.value.description,
-          img_url: newCourse.value.imgUrl,
-          course_type: newCourse.value.visibility,
-          user_id:'3fa85f64-5717-4562-b3fc-2c963f66afa6'
-        }
-        const token = localStorage.getItem('access_token');
-        console.log(token)
-        const response = await axios.post('http://localhost:8000/users/me/courses', course,
+      console.log(token);
+      const response = await axios.post(
+        'http://localhost:8000/users/me/courses',
+        course,
         {
           headers: {
             Authorization: `Bearer ${token}`, // Include the token as a Bearer token
           },
           params: {
-            user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+            user_id: user_id,
           },
         }
-      )
+      );
       // console.log(response)
-        Notify.create({
+      Notify.create({
         message: `course ${response.data.name} created successfully! `,
         color: 'green',
         position: 'bottom',
         timeout: 3000,
-          });
-      onReset()
+      });
+      onReset();
     };
     return {
       newCourse,
       onReset,
-      onSubmit
+      onSubmit,
     };
   },
 };

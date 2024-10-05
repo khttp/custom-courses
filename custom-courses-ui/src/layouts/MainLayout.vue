@@ -4,18 +4,11 @@ q-layout(container style="height: 100vh" )
     q-toolbar
       q-icon(name="school" size="2rem")
       q-toolbar-title Custom Courses
-      center
-        q-input.center(
-        v-model="search"
-        label="search"
-        placeholder="Search..."
-        class="search-bar"
-      )
       q-avatar(size='50px')
         img(
           src="icons/boy.png"
         )
-      
+      .text-h6 abooh {{ username }}
   q-page-container
     div
       q-splitter(v-model="splitterModel" style="height: 100vh")

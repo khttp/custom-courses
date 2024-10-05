@@ -1,6 +1,11 @@
 <template lang="pug">
-div.text-h3.text-center.text-teal your courses
-div.q-pa-md 
+q-input.q-pa-sm(
+    v-model="search",
+    placeholder="search..."
+    style="width:20rem;"
+
+  )
+div.q-pa-md
   .flex
    div(v-for="course in courses")
     q-card.my-card
@@ -14,11 +19,13 @@ div.q-pa-md
 </template>
 <script>
 import axios from 'axios';
+const token = localStorage.getItem('access_token');
 export default {
   name: 'HomePage',
   data() {
     return {
       courses: [],
+      searchQuery: '',
     };
   },
   mounted() {
@@ -26,7 +33,6 @@ export default {
   },
   methods: {
     async fetchCourses() {
-      const token = localStorage.getItem('access_token');
       const response = await axios.get('http://localhost:8000/courses/public', {
         headers: {
           Authorization: `Bearer ${token}`, // Include the token as a Bearer token
@@ -43,7 +49,7 @@ export default {
   padding:10px
   width: 100vh
   max-width:22rem
-.q-img 
+.q-img
   height: 200px
   object-fit: cover
 </style>

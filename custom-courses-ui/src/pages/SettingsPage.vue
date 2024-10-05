@@ -64,10 +64,8 @@
             :disable='true'
           )
 </template>
-<script setup >
+<script setup>
 defineOptions({
-    name: 'SettingsPage',
-  });
-
+  name: 'SettingsPage',
+});
 </script>
-   

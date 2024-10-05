@@ -31,7 +31,7 @@ q-page(style="display: flex; align-items: center; justify-content: center; min-h
       q-btn(label="forget password ?",flat,size="12px",color="teal",disable)
     q-btn(label="register for new account",flat,size="12px",color="teal",@click="this.$router.push('/register')")
 </template>
-  
+
 <script>
 import axios from 'axios';
 export default {
@@ -39,14 +39,14 @@ export default {
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
     };
   },
   methods: {
     async onSubmit() {
       const formData = new URLSearchParams();
-      formData.append('username', this.username); 
-      formData.append('password', this.password); 
+      formData.append('username', this.username);
+      formData.append('password', this.password);
       try {
         const response = await axios.post(
           'http://localhost:8000/auth/login',
@@ -57,16 +57,16 @@ export default {
             },
           }
         );
-
+        localStorage.setItem('user_id', response.data.user_id);
+        response.data.user_id;
         const accessToken = response.data.access_token; // Modify this based on your backend response structure
         localStorage.setItem('access_token', accessToken);
-        this.$router.push('/dashboard')
-
+        this.$router.push('/dashboard');
       } catch (error) {
         console.error('Error getting access token:', error);
         throw error;
       }
-    }
-  }
+    },
+  },
 };
 </script>

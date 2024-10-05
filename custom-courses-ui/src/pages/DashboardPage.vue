@@ -1,6 +1,11 @@
 <template lang="pug">
-div.text-h3.text-center.text-teal your courses
-div.q-pa-md 
+q-input.q-pa-sm(
+    v-model="search",
+    placeholder="search..."
+    style="width:20rem;"
+
+  )
+div.q-pa-md
   .flex
    div(v-for="course in courses" :key="course.id")
     q-card.my-card
@@ -32,6 +37,8 @@ div.q-pa-md
 <script>
 import axios from 'axios';
 import { Notify } from 'quasar';
+const token = localStorage.getItem('access_token');
+const user_id = localStorage.getItem('user_id');
 export default {
   name: 'HomePage',
   data() {
@@ -44,46 +51,46 @@ export default {
   },
   methods: {
     async fetchCourses() {
-      const token = localStorage.getItem('access_token');
-      const response = await axios.get(
-        'http://localhost:8000/users/me/courses',
-        {
+      console.log('hi there i am using vue');
+      const response = await axios
+        .get('http://localhost:8000/users/me/courses', {
           headers: {
             Authorization: `Bearer ${token}`, // Include the token as a Bearer token
           },
           params: {
-            current_user_id: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+            current_user_id: user_id,
           },
-        }
-      );
+        })
+        .catch((error) => {
+          if (error.response.status === 401) this.$router.push('/login');
+        });
       this.courses = response.data;
     },
-    async delete_course(courseID){
-      
-      const token = localStorage.getItem('access_token');
-      try{
-        await axios.delete(`http://localhost:8000/courses/${courseID}`,
-        {headers:{
-          Authorization: `Bearer ${token}`,
-        }}
-      )
-      this.courses = this.courses.filter(course => course.id !== courseID);
-      
-      Notify.create({
-        message: 'course deleted successfully!',
-        color: 'green',
-        position: 'bottom',
-        timeout: 3000,
-      });
-    }catch(error){
-      console.log(error)
-    }    
-  },
-    async edit_course_name(courseID,newName) {
-      const token = localStorage.getItem('access_token');
+    async delete_course(courseID) {
+      try {
+        await axios.delete(`http://localhost:8000/courses/${courseID}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        this.courses = this.courses.filter((course) => course.id !== courseID);
+
+        Notify.create({
+          message: 'course deleted successfully!',
+          color: 'green',
+          position: 'bottom',
+          timeout: 3000,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async edit_course_name(courseID, newName) {
       await axios.put(
-        `http://localhost:8000/courses/${courseID}`,{name:newName},
-        {headers: {
+        `http://localhost:8000/courses/${courseID}`,
+        { name: newName },
+        {
+          headers: {
             Authorization: `Bearer ${token}`,
           },
         }
@@ -94,7 +101,7 @@ export default {
         position: 'bottom',
         timeout: 3000,
       });
-    }
+    },
   },
 };
 </script>
@@ -104,7 +111,7 @@ export default {
   padding:10px
   width: 100vh
   max-width:20rem
-.q-img 
+.q-img
   height: 200px
   object-fit: cover
 </style>

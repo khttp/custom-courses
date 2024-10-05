@@ -48,59 +48,82 @@ q-page(style="display: flex; align-items: center; justify-content: center; min-h
         class="q-mb-md"
       )
 
-      q-checkbox(v-model="termsAccepted" label="I accept the terms and conditions" class="q-mb-md")
+      q-input(
+        filled
+        v-model="phoneNo"
+        label="Phone number"
+        type="text"
+        hint="Enter your phone number"
+        lazy-rules
+        :rules="[val => !!val || 'Confirm Password is required']"
+        class="q-mb-md"
+      )
 
+      q-input(
+        filled
+        v-model="country"
+        label="Country"
+        type="text"
+        hint="Enter your Country"
+        lazy-rules
+        :rules="[val => !!val || 'Confirm Password is required']"
+        class="q-mb-md"
+      )
+      q-checkbox(v-model="termsAccepted" label="I accept the terms and conditions" class="q-mb-md")
       div.text-center
         q-btn(label="Register" type="submit" color="teal")
 </template>
-  
+
 <script>
 import axios from 'axios';
-import {v4} from'uuid'
+import { v4 } from 'uuid';
 import { Notify } from 'quasar';
 export default {
   name: 'RegisterPage',
   data() {
     return {
-      name:'',
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
-      termsAccepted: false
+      phoneNo: '',
+      country: '',
+      termsAccepted: false,
     };
   },
   methods: {
     async onSubmit() {
-        if(this.password!=this.confirmPassword){
-            Notify.create({
-                message: 'passwords don\'t match!',
-                color: 'red',
-                position: 'bottom',
-                timeout: 3000,
-            });
-        }
-        if(this.termsAccepted==false){
-            Notify.create({
-                message: 'please accept our terms',
-                color: 'red',
-                position: 'bottom',
-                timeout: 3000,
-            });
-        }
-        await axios.post('http://localhost:8000/auth/register',
-            {id:v4(),
-             name:this.name,
-             email:this.email,
-             password:this.password
-            })
+      if (this.password != this.confirmPassword) {
         Notify.create({
-            message:'thanks for registering to our site welcome aboard',
-            color:'green',
-            timeout:3000
-        })
-        this.$router.push('/login')
+          message: "passwords don't match!",
+          color: 'red',
+          position: 'bottom',
+          timeout: 3000,
+        });
+      }
+      if (this.termsAccepted == false) {
+        Notify.create({
+          message: 'please accept our terms',
+          color: 'red',
+          position: 'bottom',
+          timeout: 3000,
+        });
+      }
+      await axios.post('http://localhost:8000/auth/register', {
+        id: v4(),
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        phone: this.phoneNo,
+        country: this.country,
+      });
+      Notify.create({
+        message: 'thanks for registering to our site welcome aboard',
+        color: 'green',
+        timeout: 3000,
+      });
+      if (token && user_id) this.$router.push('/login');
     },
-  }
+  },
 };
 </script>
-  

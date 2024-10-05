@@ -69,7 +69,7 @@
               .col
                 .text-h6.text-teal Email
                 .text-h7 abdelraham.khattab@gmeindz.com
-    
+
             .row.q-gutter-sm
               q-icon(name='phone', size='1.8rem', color='teal')
               .col
@@ -83,18 +83,17 @@
         .column
           br
     </template>
-    <script setup>
-    defineOptions({
-      name: 'UserSettingsPage',
-    });
-    import { ref } from 'vue';
-    const editUserDialog = ref(false);
-    const user = ref({
-        name:'',
-        email:'',
-        phone:'',
-        country:''
-    })
-    console.log(editUserDialog,user)
-    </script>
-    
+<script setup>
+defineOptions({
+  name: 'UserSettingsPage',
+});
+import { ref } from 'vue';
+const editUserDialog = ref(false);
+const user = ref({
+  name: '',
+  email: '',
+  phone: '',
+  country: '',
+});
+console.log(editUserDialog, user);
+</script>
