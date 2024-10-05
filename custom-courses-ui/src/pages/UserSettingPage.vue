@@ -51,8 +51,7 @@
                     label='Save',
                     color='teal',
                     flat,
-                    @click='editUserDialog = false',
-                    disable
+                    @click='editProfile;editUserDialog=false',
                   )
         .row.q-gutter-md
           .column.q-gutter-md
@@ -63,30 +62,27 @@
               q-icon(name='person', size='1.8rem', color='teal')
               .col
                 .text-h6.text-teal Name
-                .text-h7 Abdelrahman khattab
+                .text-h7 {{ user.name }}
             .row.q-gutter-sm
               q-icon(name='email', size='1.8rem', color='teal')
               .col
                 .text-h6.text-teal Email
-                .text-h7 abdelraham.khattab@gmeindz.com
+                .text-h7 {{ user.email }}
 
             .row.q-gutter-sm
               q-icon(name='phone', size='1.8rem', color='teal')
               .col
                 .text-h6.text-teal Phone
-                .text-h7 +201000000000
+                .text-h7  {{ user.phone }} 
             .row.q-gutter-sm
               q-icon(name='public', size='1.8rem', color='teal')
               .col
                 .text-h6.text-teal Country
-                .text-h7 Egypt
+                .text-h7 {{ user.country }}
         .column
           br
     </template>
 <script setup>
-defineOptions({
-  name: 'UserSettingsPage',
-});
 import { ref } from 'vue';
 const editUserDialog = ref(false);
 const user = ref({
@@ -95,5 +91,9 @@ const user = ref({
   phone: '',
   country: '',
 });
-console.log(editUserDialog, user);
+/* eslint-disable-next-line no-unused-vars */
+const editProfile=()=>{
+  user.value = this.user;
+}
+console.log(editUserDialog, user,editProfile);
 </script>
